@@ -1,2 +1,2 @@
-# recipes-app-web
-A simple recipes app web
+# recipe-app-web
+A simple recipe app web
