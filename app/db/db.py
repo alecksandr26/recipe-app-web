@@ -128,6 +128,17 @@ class Table:
             return data
         return data if len(data) > 1 else data[0]
 
+    # update_where: To update the rows where.
+    def update_where(self, values : dict, where : dict):
+        cur = self.conn.cursor()
+        values_str = ", ".join(f"{column} = %s" for column in values.keys())
+        values_where = " AND ".join(f"{column} = %s" for column in where.keys())
+        query = f"UPDATE {self.__name} SET {values_str} WHERE {values_where}"
+        query_values = tuple(val for val in values.values())
+        query_values = query_values + tuple(val for val in where.values())
+        cur.execute(query, query_values)
+        cur.close()
+        self.conn.commit()
 
 
 class DB:
