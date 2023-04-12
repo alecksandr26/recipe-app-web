@@ -1,5 +1,5 @@
 # Recipe app web
-A simple web application for cooking recipes
+A simple web application of cooking recipes
 # To run
 Before anything you must to install all the libs.
 ```
