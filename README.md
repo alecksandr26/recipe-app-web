@@ -11,9 +11,10 @@ export SECRET_KEY='Your secret key'
 export DATABASE_URI="postgresql://username:password@host:port/database_name"
 export FLASK_APP=app
 ```
-If you want to run the project in the development mode.
+If you want to run the project in debug mode and development mode, you must to create these env variables.
 ```
 export FLASK_DEBUG=true
+export FLASK_ENV=development
 ```
 Finally run the app.
 ```
