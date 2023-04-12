@@ -8,6 +8,3 @@ class User(db.Model):
     username = db.Column(db.String(50), nullable = False)
     mail = db.Column(db.String(50))
     password = db.Column(db.String(50), nullable = False)
-
-
-    
