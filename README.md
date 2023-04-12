@@ -15,7 +15,7 @@ If you want to run the project in the development mode.
 ```
 export FLASK_DEBUG=true
 ```
-Finally just run the app.
+Finally run the app.
 ```
 flask run
 ```
