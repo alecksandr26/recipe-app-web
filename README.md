@@ -1,6 +1,6 @@
 # Recipe app web
 A simple web application for cooking recipes
-# Running
+# To run
 Before anything you must to install all the libs.
 ```
 pip install -r requirements.txt
