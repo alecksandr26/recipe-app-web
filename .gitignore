@@ -1,4 +1,5 @@
 # The scripts
+setup.bat
 setup.sh
 *.db
 
