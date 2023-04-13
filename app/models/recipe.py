@@ -7,8 +7,8 @@ class Recipe(db.Model):
     ingredients = db.Column(db.Text, nullable = False)
     instructions = db.Column(db.Text, nullable = False)
     portions = db.Column(db.Integer)
-    idcategory = db.Column(db.Integer, ForeignKey("category.id"))
+    idcategory = db.Column(db.Integer, db.ForeignKey("category.id"))
     url = db.Column(db.Text)
-    
-    
-    
+    name = db.Column(db.Text, nullable = False)
+    preptime = db.Column(db.String(25))
+    cooktime = db.Column(db.String(25))

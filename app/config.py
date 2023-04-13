@@ -4,7 +4,6 @@ A simple configuration file
 
 import os
 
-# Catch the path from the current file
 basedir = os.path.abspath(os.path.dirname(__file__))
 
 class Config:
@@ -13,5 +12,6 @@ class Config:
 
     # Creates a database on the project dir
     SQLALCHEMY_DATABASE_URI = os.environ.get('DATABASE_URI') or 'sqlite:///' + os.path.join(basedir,
-                                                                                            'app.db')
+                                                                                     'app.db')
+    # SQLALCHEMY_POOL_SIZE = 10
     SQLALCHEMY_TRACK_MODIFICATIONS = False

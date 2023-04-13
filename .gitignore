@@ -1,6 +1,9 @@
+# Migrations
+migrations/*
+
 # The scripts
-setup.bat
-setup.sh
+*.bat
+*.sh
 *.db
 
 
