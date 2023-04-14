@@ -1,7 +1,7 @@
 # Recipe app web
 A simple web application of cooking recipes
 # To run
-Before anything you must to install all the libs.
+Before anything you must to install all the libs in a new [env](https://docs.python.org/3/library/venv.html) of python.
 ```
 pip install -r requirements.txt
 ```
