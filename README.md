@@ -30,7 +30,7 @@ Finally run the app.
 ```
 flask run
 ```
-# MuckUps
+# MockUps
 These are the mockups of the app.
 
 https://app.moqups.com/h3IlkiaF2mpUWPfcLvkJuiiinSAJSUTE/view/page/a013e980c
