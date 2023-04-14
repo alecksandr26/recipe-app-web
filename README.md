@@ -16,6 +16,16 @@ If you want to run the project in debug mode and development mode, you must to c
 export FLASK_DEBUG=true
 export FLASK_ENV=development
 ```
+Before running everything try to migrate and upgrade the shema schema, `flask-migrate` uses Alembic.
+```
+flask db init
+flask db migrate
+flask db upgrade
+```
+After that now you must create the models in your database.
+```
+flask models create
+```
 Finally run the app.
 ```
 flask run
