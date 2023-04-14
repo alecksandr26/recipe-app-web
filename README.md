@@ -24,7 +24,7 @@ flask run
 These are the mockups of the app.
 
 https://app.moqups.com/h3IlkiaF2mpUWPfcLvkJuiiinSAJSUTE/view/page/a013e980c
-# Todo:
+# Todo
 1. Create the tests for the login and signup pages
 2. Finshing with the models
 3. Try to upload the whole backup of the database
