@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+
+<!-- Import what the forms -->
+{% import 'bootstrap/wtf.html' as wtf %}
+
+{% block header %}
+{% endblock %}
+
+{% block main %}
+
+<!-- Check an error -->
+{% if error %}
+<p>{{ error }}</p>
+{% endif %}
+
+<span>
+    <h1>{% block title %} Signup {% endblock %}</h1>
+</span>
+
+<div class="container">
+    <form action="{{ url_for('auth.signup') }}" method="POST">
+	{{ wtf.quick_form(signup_form) }}
+    </form>
+    
+    <!-- Simple back buttom in js -->
+    <a href="{{ url_for('auth.login') }}">Go back login</a>
+</div>
+
+{% endblock %}
+
+
+{% block style %}
+{% endblock %}

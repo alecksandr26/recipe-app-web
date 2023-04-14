@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+
+{% block header %}
+{% endblock %}
+
+{% block main %}
+<span>
+    <h1>{% block title %} Anauthorized 401 {% endblock %}</h1>
+</span>
+Hey what are you trying to do pal? >:|, <a href="{{ url_for("auth.login") }}">login</a>
+{% endblock %}
+
+{% block style %}
+{% endblock %}
+
+
+
+

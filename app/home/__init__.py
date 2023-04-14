@@ -1,8 +1,7 @@
 # The main view of the app
-
 from flask import Blueprint
 
 # Create the main blueprint
-bp = Blueprint('main', __name__)
+bp = Blueprint("home", __name__)
 
-from app.main import routes
+from app.home import routes
