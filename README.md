@@ -29,3 +29,4 @@ https://app.moqups.com/h3IlkiaF2mpUWPfcLvkJuiiinSAJSUTE/view/page/a013e980c
 2. Finshing with the models
 3. Try to upload the whole backup of the database
 4. Create the navbar of the home
+5. Start with css styling
