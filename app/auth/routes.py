@@ -92,11 +92,11 @@ def signup():
         
         if re.match(pattern, mail):  # Valid the mail
             # check if the users exist
-            query_mail = User.query.filter_by(mail = mail).first()
-            if query_mail == None:
+            user_model = User.query.filter_by(mail = mail).first()
+            if user_model == None:
                 # Connect to the database, create a new user and create a new session
                 password = signup_form.password.data
-                is_chef = signup_form.is_chef.data
+                is_chef = signup_form.is_chef.data # Booleano
                 signup_form = None
                 
                 # Create a new instance of the model user
@@ -111,6 +111,8 @@ def signup():
                 if is_chef:    # Append to the cheff table
                     user_id = User.query.filter_by(mail = user_model.mail).first().id
                     chef_model = Chef(int(user_id))
+
+                    # Push data
                     db.session.add(chef_model)
                     db.session.commit()
                 
@@ -118,10 +120,14 @@ def signup():
                 user_session = UserSession(user_model)
                 login_user(user_session)
 
+                # flashing Is not working 
                 flash("Account created baby >:)")
                 
                 return redirect(url_for("home.home"))
             else:
+                # url_for("auth.signup", error = "esto es un error")
+                # /auth/signup?error=esto%27s+es+un+error
+                # nos redirigimos a /auth/signup?error=esto%27s+es+un+error
                 return redirect(url_for(
                     "auth.signup",
                     error = "That mail already exists pal, use another!!! >:("), code = 303)
