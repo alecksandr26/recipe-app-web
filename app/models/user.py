@@ -9,7 +9,7 @@ class User(db.Model):
     username = db.Column(db.String(50), nullable = False)
     password = db.Column(db.String(), nullable = False)    
 
-    def __init__(self, username, password, mail):
+    def __init__(self, username : str, password : str, mail : str):
         assert isinstance(username, str)
         assert isinstance(password, str)
         assert isinstance(mail, str)
@@ -19,6 +19,6 @@ class User(db.Model):
         self.mail = mail
 
     def __repr__(self):
-        return "<User {} - {}>".format(self.id, self.username)
+        return "<User {} - {}>".format(self.ixd, self.username)
 
     

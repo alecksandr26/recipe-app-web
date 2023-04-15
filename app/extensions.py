@@ -16,12 +16,11 @@ from flask_login import LoginManager
 # For the database
 db = SQLAlchemy()
 
-# For migrates
+# Initialize the migrations instnace
 migrate = Migrate()
 
-# For the login sessions of the users
+# Initialize the manager for users login
 login_manager = LoginManager()
 
 # Import the whole configurations from the auth with flask-login
 from app.auth import *
-

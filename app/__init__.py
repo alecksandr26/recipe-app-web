@@ -36,7 +36,7 @@ def create_app(config_class = Config) -> Flask:
     # For migrates
     migrate.init_app(app, db)
 
-    # For the login
+    # The login manager catches the app instance
     login_manager.init_app(app)
 
     # Flask commands

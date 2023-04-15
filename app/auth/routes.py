@@ -31,28 +31,35 @@ TODO: For each method creats its own function
 def login():
     login_form = LoginForm()
     contex = {
-        "url_for" : url_for,
+        "url_for" : url_for, # Funcion para generar url a partir de un modelo
         "login_form" : login_form,
-        "error" : request.args.get("error")
+        "error" : request.args.get("error") # Saco variables de urls
+        # Ejemplo:
+        # http://localhost:5000/auth/login?error=That%27s+an+invalid+mail+pal,+learn+how+to+write+one!!!!+%3E%3A(
     }
 
     if request.method == "POST" and login_form.validate_on_submit():
-        # Extact the data from the form
+        # Extact the data from the form :)
         mail = login_form.mail.data
         password = login_form.password.data
 
         login_form = None
         if re.match(pattern, mail):  # Valid the mail
+            # Search the user and return the instance model
             user_model = User.query.filter_by(mail = mail).first()
+            print(user_model)
             
-            if user_model != None:
+            if user_model != None: # Verify that the instance exist
+                # Check the password
+                # password = from the user text unhash
+                # user_model.password = is the hashed password
                 if check_password_hash(user_model.password, password):
                     # Create an instance for the session
                     user_session = UserSession(user_model)
                     
                     # Login the user
                     login_user(user_session)
-                    return redirect(url_for("home.home"))
+                    return redirect(url_for("home.home")) # redirect the home
                 else:
                     return redirect(url_for(
                         "auth.login",
@@ -67,6 +74,7 @@ def login():
                 error = "That's an invalid mail pal, learn how to write one!!!! >:("), code = 303)
 
     # Unpack the contex
+    # **contex = (url_for = url_for, login_form = login_form, error = request..
     return render_template("auth/login.html", **contex)
 
 @bp.route("/signup", methods = ["GET", "POST"])
