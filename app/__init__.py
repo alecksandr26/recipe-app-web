@@ -33,6 +33,9 @@ def create_app(config_class = Config) -> Flask:
     from app.home import bp as home_bp
     app.register_blueprint(home_bp)
 
+    from app.recipe import bp as recipe_bp
+    app.register_blueprint(recipe_bp)
+
     # For migrates
     migrate.init_app(app, db)
 

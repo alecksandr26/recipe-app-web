@@ -3,10 +3,10 @@ from flask import render_template, url_for, request, redirect, flash
 from app.auth import bp, UserSession
 
 # documentation: https://flask-login.readthedocs.io/en/latest/
-from flask_login import login_user, login_required, logout_user
+from flask_login import login_user, login_required, logout_user, current_user
 
 # Import the forms
-from app.forms import LoginForm, SignUpForm
+from app.forms import LoginForm, SignUpForm, SettingsForm
 
 # To hash passwords and check
 from werkzeug.security import generate_password_hash, check_password_hash
@@ -22,7 +22,6 @@ from app.extensions import db
 import re
 pattern = r"^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$"
 
-
 """
 TODO: For each method creats its own function
 """
@@ -35,7 +34,7 @@ def login():
         "login_form" : login_form,
         "error" : request.args.get("error") # Saco variables de urls
         # Ejemplo:
-        # http://localhost:5000/auth/login?error=That%27s+an+invalid+mail+pal,+learn+how+to+write+one!!!!+%3E%3A(
+    # http://localhost:5000/auth/login?error=That%27s+an+invalid+mail+pal,+learn+how+to+write+one!!!!+%3E%3A(
     }
 
     if request.method == "POST" and login_form.validate_on_submit():
@@ -80,6 +79,7 @@ def login():
 @bp.route("/signup", methods = ["GET", "POST"])
 def signup():
     signup_form = SignUpForm()
+    
     contex = {
         "url_for" : url_for,
         "signup_form" : signup_form,
@@ -145,3 +145,41 @@ def signup():
 def logout():
     logout_user()
     return redirect(url_for("auth.login"), code = 303)
+
+
+@bp.route("/settings", methods = ["GET", "POST"])
+@login_required
+def settings():
+    settings_form = SettingsForm()
+    contex = {
+        "url_for" : url_for,
+        "settings_form" : settings_form,
+        "error" : request.args.get("error")
+    }
+
+    if request.method == "POST" and settings_form.validate_on_submit():
+        user_model = User.query.filter_by(id = current_user.id).first()
+        mail = settings_form.mail.data
+
+        if mail != "":
+            if re.match(pattern, mail):
+                user_model.mail = mail
+            else:
+                return redirect(url_for(
+                    "auth.settings",
+                    error = "Hey bug head, learn how to write an email"), code = 303)
+                
+        username = settings_form.username.data
+        if username != "":
+            user_model.username = username
+
+
+        password = settings_form.password.data
+        if password != "":
+            user_model.password = password
+
+        db.session.commit()
+
+    
+    return render_template("auth/settings.html", **contex)
+

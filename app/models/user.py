@@ -19,6 +19,6 @@ class User(db.Model):
         self.mail = mail
 
     def __repr__(self):
-        return "<User {} - {}>".format(self.ixd, self.username)
+        return "<User {} - {}>".format(self.id, self.username)
 
     

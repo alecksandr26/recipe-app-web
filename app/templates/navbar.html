@@ -1,0 +1,19 @@
+
+
+<nav>
+    <a href="{{ url_for('home.home') }}">FlaskApp</a>
+    <a href="{{ url_for('recipe.search') }}">Search</a>
+    <a href="{{ url_for('recipe.create') }}">Create</a>
+    <a href="{{ url_for('auth.settings') }}">Settings</a>
+    <a href="{{ url_for('auth.logout') }}">LogOut</a>
+</nav>
+<hr>
+
+<style>
+nav a {
+    color: #d64161;
+    font-size: 3em;
+    margin-left: 50px;
+    text-decoration: none;
+}
+</style>
