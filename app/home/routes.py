@@ -6,6 +6,10 @@ from app.home import bp
 from flask_login import login_required, current_user
 from app.auth import UserSession
 
+
+# Here lalo is going to create a new route
+
+
 @bp.route("/", methods = ["GET"])
 @login_required
 def home():
