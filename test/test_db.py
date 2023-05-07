@@ -6,10 +6,13 @@ from app import create_app
 from app.extensions import db
 from sqlalchemy import text
 
+# Import the configuration
+from app.config import Config
 
 class DBTestCases(TestCase):
     def create_app(self):
         app = create_app()
+        app.config['SQLALCHEMY_DATABASE_URI'] = Config.SQLALCHEMY_DATABASE_URI  # Load the db connection
         app.config['TESTING'] = True  # Set the app in testing mode
         return app
     

@@ -17,7 +17,7 @@
 </span>
 
 <div class="container">
-    <form action="{{ url_for('auth.settings') }}" method="POST">
+    <form action="{{ url_for('auth.settings_post') }}" method="POST">
 	{{ wtf.quick_form(settings_form) }}
     </form>
     
