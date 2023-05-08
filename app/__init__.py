@@ -1,4 +1,5 @@
 from flask import Flask
+from flask_wtf.csrf import CSRFProtect
 
 # Import the configuration
 from app.config import Config
@@ -19,9 +20,12 @@ from app.models import *
 def create_app(config_class = Config) -> Flask:
     app = Flask(__name__)
     app.config.from_object(config_class)
+
+    # Enable csrf protection
+    csrf = CSRFProtect(app)
     
     # Initialize some Flask extensions here
-    db.init_app(app)
+    db.init_app(app)            # Initialize the db 
 
     # To initialize bootstrap
     Bootstrap(app)
@@ -44,9 +48,12 @@ def create_app(config_class = Config) -> Flask:
 
     # Flask commands
     @app.cli.command("test")
-    def test():
-        # Load the tests
-        tests = unittest.TestLoader().discover('test')
+    @click.option('--file', default = None, help = 'Path to a specific test file')
+    def test(file):
+        if file:
+            tests = unittest.TestLoader().discover('test', pattern = file.split('/')[-1])
+        else:
+            tests = unittest.TestLoader().discover('test')
         unittest.TextTestRunner().run(tests)
 
     # To create the the models

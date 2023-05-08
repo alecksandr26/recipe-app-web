@@ -12,11 +12,14 @@ from app.forms import LoginForm, SignUpForm, SettingsForm
 from werkzeug.security import generate_password_hash, check_password_hash
 
 # DB for users
-from app.models.user import User
-from app.models.chef import Chef
+from app.models import User
+from app.models import Chef
 
 # To push new data to the database
 from app.extensions import db
+
+
+import pdb
 
 # To check an email
 import re
@@ -26,7 +29,7 @@ pattern = r"^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$"
 def login_post():
     login_form = LoginForm()
     if not login_form.validate_on_submit():  #  Validate the form
-        return redirect(url_for("auth.login"))
+        return redirect(url_for("auth.login"), code = 303)
 
     mail = login_form.mail.data
     password = login_form.password.data
@@ -38,7 +41,6 @@ def login_post():
     
     # Search the user and return the instance model
     user_model = User.query.filter_by(mail = mail).first()
-    print(user_model)
     
     if not user_model != None: # Verify that the instance exist
         return redirect(url_for(
@@ -79,12 +81,14 @@ def login():
 @bp.route("/signup", methods = ["POST"])
 def signup_post():
     signup_form = SignUpForm()
+    mail = signup_form.mail.data
+    
     if not (signup_form.validate_on_submit() and re.match(pattern, mail)):
         return redirect(url_for(
             "auth.signup",
             error = "That's an invalid mail pal, learn how to write one!!!! >:("), code = 303)
     
-    mail = signup_form.mail.data
+
     username = signup_form.username.data
     
     # check if the users exist
@@ -103,10 +107,13 @@ def signup_post():
     password = signup_form.password.data
     is_chef = signup_form.is_chef.data # Booleano
     signup_form = None
-        
+
+
+    
     # Create a new instance of the model user
     user_model = User(username = username,
-                      password = generate_password_hash(password), mail = mail)
+                      password = generate_password_hash(password),
+                      mail = mail)
         
     # Push the data
     db.session.add(user_model)
@@ -153,8 +160,10 @@ def logout():
 @login_required
 def settings_post():
     settings_form = SettingsForm()
+    pdb.set_trace()
+    
     if not settings_form.validate_on_submit():
-        return redirect(url_for("auth.settings"))
+        return redirect(url_for("auth.settings"), code = 303)
 
     user_model = User.query.filter_by(id = current_user.id).first()
     mail = settings_form.mail.data

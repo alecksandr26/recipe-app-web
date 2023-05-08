@@ -9,12 +9,13 @@ from sqlalchemy import text
 # Import the configuration
 from app.config import Config
 
+import os
+
 class DBTestCases(TestCase):
     def create_app(self):
-        app = create_app()
-        app.config['SQLALCHEMY_DATABASE_URI'] = Config.SQLALCHEMY_DATABASE_URI  # Load the db connection
-        app.config['TESTING'] = True  # Set the app in testing mode
-        return app
+        Config.SQLALCHEMY_DATABASE_URI = os.environ.get('DATABASE_URI')
+        Config.TESTING = True
+        return create_app()
     
     # Check if the app exist
     def test_app_exists(self):

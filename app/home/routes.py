@@ -8,7 +8,10 @@ from app.auth import UserSession
 
 
 # Here lalo is going to create a new route
-
+@bp.route("/", methods = ["POST"])
+@login_required
+def home_post():
+    pass
 
 @bp.route("/", methods = ["GET"])
 @login_required

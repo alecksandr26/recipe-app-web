@@ -13,5 +13,6 @@ class Config:
     # Creates a database on the project dir
     SQLALCHEMY_DATABASE_URI = os.environ.get('DATABASE_URI') or 'sqlite:///' + os.path.join(basedir,
                                                                                      'app.db')
-    # SQLALCHEMY_POOL_SIZE = 10
     SQLALCHEMY_TRACK_MODIFICATIONS = False
+    TESTING = False
+    WTF_CSRF_ENABLED = True
