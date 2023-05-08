@@ -160,8 +160,6 @@ def logout():
 @login_required
 def settings_post():
     settings_form = SettingsForm()
-    pdb.set_trace()
-    
     if not settings_form.validate_on_submit():
         return redirect(url_for("auth.settings"), code = 303)
 
