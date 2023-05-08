@@ -5,6 +5,7 @@ from app.home import bp
 # For the current user
 from flask_login import login_required, current_user
 from app.auth import UserSession
+from app.forms import RecipeSearchForm
 
 
 # Here lalo is going to create a new route
@@ -20,5 +21,7 @@ def home():
         "user_data" : current_user.query_data(), # The data
         "is_chef" : current_user.is_chef() # Bool
     }
+    
+    
     # Catch the users data
     return render_template('home.html', **contex)
