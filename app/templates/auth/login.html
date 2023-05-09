@@ -13,15 +13,20 @@
 <p>{{ error }}</p>
 {% endif %}
 
-<span class="title">
+<div class="d-flex justify-content-center">
+  <span class="title">
     <h1>{% block title %} Login {% endblock %}</h1>
-</span>
+  </span>
+</div>
+
 <div class="container">
     <form action="{{ url_for('auth.login_post') }}" method="POST">
 	{{ wtf.quick_form(login_form) }}
 	{{ login_form.csrf_token }}
     </form>
-    <a href="{{ url_for('auth.signup') }}">Create Account</a>
+    <div class="text-center">
+	<a href="{{ url_for('auth.signup') }}">Create Account</a>
+    </div>
 </div>
 {% endblock %}
 

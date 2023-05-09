@@ -6,7 +6,7 @@ from app.auth import bp, UserSession
 from flask_login import login_user, login_required, logout_user, current_user
 
 # Import the forms
-from app.forms import LoginForm, SignUpForm, SettingsForm
+from app.forms import LoginForm, SignUpForm, SettingsForm, HomeSearchForm
 
 # To hash passwords and check
 from werkzeug.security import generate_password_hash, check_password_hash
@@ -189,9 +189,11 @@ def settings_post():
 @login_required
 def settings():
     settings_form = SettingsForm()
+    search_form = HomeSearchForm()
     contex = {
         "url_for" : url_for,
         "settings_form" : settings_form,
+        "search_form" : search_form,
         "error" : request.args.get("error")
     }
     

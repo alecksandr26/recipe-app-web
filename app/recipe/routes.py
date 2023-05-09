@@ -7,28 +7,24 @@ from flask_login import login_user, login_required, logout_user, current_user
 
 # To push new data to the database
 from app.extensions import db
-from app.forms import RecipeCreateForm, RecipeSearchForm
+from app.forms import RecipeCreateForm, RecipeSearchForm, HomeSearchForm
 
-@bp.route('/search', methods = ["GET", "POST"])
+
+@bp.route("/create", methods = ["POST"])
 @login_required
-def search():
-    recipe_search_form = RecipeSearchForm()
-    
-    contex = {
-        "url_for" : url_for,
-        "recipe_search_form" : recipe_search_form
-    }
+def create_post():
+    recipe_create_form = RecipeCreateForm()
+    return redirect(url_for("home.home"), code = 302)
 
-    return render_template("recipe/search.html", **contex)
 
-@bp.route("/create", methods = ["GET", "POST"])
+@bp.route("/create", methods = ["GET"])
 @login_required
 def create():
-    recipe_create_form = RecipeCreateForm()
-    
     contex = {
         "url_for" : url_for,
-        "recipe_create_form" : recipe_create_form
+        "recipe_create_form" : RecipeCreateForm(),
+        "search_form" : HomeSearchForm(),
+        "error" : request.args.get("error")
     }
     
     return render_template("recipe/create.html", **contex)

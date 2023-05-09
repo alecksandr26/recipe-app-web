@@ -14,7 +14,3 @@ class RecipeCreateForm(FlaskForm):
     instru = TextAreaField("Instructions")
     submit = SubmitField("Submit")
     
-
-class RecipeSearchForm(FlaskForm):
-    name = StringField("Search name")
-    submit = SubmitField("Submit")

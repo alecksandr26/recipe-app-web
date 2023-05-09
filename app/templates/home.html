@@ -1,5 +1,6 @@
 <!-- The home app flask -->
 
+{% import 'bootstrap/wtf.html' as wtf %}
 {% extends 'base.html' %}
 
 {% block style %}
@@ -10,12 +11,24 @@
 {% include 'navbar.html' %}
 {% endblock %}
 
+
 {% block main %}
-<span class="title">
-    <h1>{% block title %} The Home Page of FlaskApp {% endblock %}</h1>
-</span>
-<div class="content">
-    <h2>This is the main Flask blueprint</h2>
-    <h3>There your are babyyy >:) {{ user_data.username }} and you are a chef or what? {{ is_chef }}</h3>
+<div class="d-flex justify-content-center">
+  <span class="title">
+    <h1>{% block title %} Home {% endblock %}</h1>
+  </span>
 </div>
+
+<div class="content text-center">
+    <h2>Recipes/Lists/Categories</h2>
+</div>
+
+<div>
+    {% if data == [] %}
+    <!--  -->
+    {% else %}
+
+    {% endif %}
+</div>
+
 {% endblock %}

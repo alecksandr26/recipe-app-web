@@ -13,19 +13,22 @@
 <p>{{ error }}</p>
 {% endif %}
 
-<span>
+<div class="d-flex justify-content-center">
+  <span class="title">
     <h1>{% block title %} Signup {% endblock %}</h1>
-</span>
+  </span>
+</div>
+
 
 <div class="container">
     <form action="{{ url_for('auth.signup_post') }}" method="POST">
-	{{ wtf.quick_form(signup_form) }}x
+	{{ wtf.quick_form(signup_form) }}
 	{{ signup_form.csrf_token }}
-
     </form>
     
-    <!-- Simple back buttom in js -->
-    <a href="{{ url_for('auth.login') }}">Go back login</a>
+    <div class="text-center">
+	<a href="{{ url_for('auth.login') }}">Go back to login</a>
+    </div>
 </div>
 
 {% endblock %}

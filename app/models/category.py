@@ -6,3 +6,11 @@ class Category(db.Model):
     id = db.Column(db.Integer, primary_key = True)
     name = db.Column(db.String(50), nullable = False)
 
+    def __init__(self, name : str):
+        assert isinstance(name, str)
+        self.name = name
+
+    def __repr__(self):
+        return "<Category {} - {}".format(self.id, self.name)
+    
+

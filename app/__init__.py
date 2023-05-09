@@ -27,7 +27,6 @@ def create_app(config_class = Config) -> Flask:
     # Initialize some Flask extensions here
     db.init_app(app)            # Initialize the db 
 
-    # To initialize bootstrap
     Bootstrap(app)
 
     # Register the blueprints here
