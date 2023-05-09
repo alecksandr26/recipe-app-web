@@ -27,7 +27,10 @@ def create_app(config_class = Config) -> Flask:
     # Initialize some Flask extensions here
     db.init_app(app)            # Initialize the db 
 
-    Bootstrap(app)
+    Bootstrap(app)              # Allow the bootstrap 
+
+    # Configure the cors 
+    cors = CORS(app, resources={r"/*": {"origins": "*"}})
 
     # Register the blueprints here
     from app.auth import bp as auth_bp

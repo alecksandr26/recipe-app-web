@@ -12,8 +12,7 @@ from app.forms import LoginForm, SignUpForm, SettingsForm, HomeSearchForm
 from werkzeug.security import generate_password_hash, check_password_hash
 
 # DB for users
-from app.models import User
-from app.models import Chef
+from app.models import User, Chef, List
 
 # To push new data to the database
 from app.extensions import db
@@ -83,7 +82,12 @@ def signup_post():
     signup_form = SignUpForm()
     mail = signup_form.mail.data
     
-    if not (signup_form.validate_on_submit() and re.match(pattern, mail)):
+    if not signup_form.validate_on_submit():
+        return redirect(url_for(
+            "auth.signup",
+            error = "You are doing something wrong !!!! >:("), code = 303)
+
+    if not re.match(pattern, mail):
         return redirect(url_for(
             "auth.signup",
             error = "That's an invalid mail pal, learn how to write one!!!! >:("), code = 303)
@@ -117,16 +121,24 @@ def signup_post():
         
     # Push the data
     db.session.add(user_model)
-    db.session.commit()
-
+    user_id = User.query.filter_by(mail = user_model.mail).first().id
+    
     # Push if it is chef
     if is_chef:    # Append to the cheff table
-        user_id = User.query.filter_by(mail = user_model.mail).first().id
+
         chef_model = Chef(int(user_id))
         
         # Push data
         db.session.add(chef_model)
-        db.session.commit()
+
+
+    # Creates the favorites list
+    # It uses the mail because it is unique
+    fav_list_model = List("Favorites", int(user_id), f"Favorites list of {username}")
+    db.session.add(fav_list_model)
+
+    db.session.commit()
+
                 
     # Create the session and login it
     user_session = UserSession(user_model)
@@ -161,7 +173,7 @@ def logout():
 def settings_post():
     settings_form = SettingsForm()
     if not settings_form.validate_on_submit():
-        return redirect(url_for("auth.settings"), code = 303)
+        return redirect(url_for("auth.settings", error = "You written  something wrong pal :|"), code = 303)
 
     user_model = User.query.filter_by(id = current_user.id).first()
     mail = settings_form.mail.data
@@ -178,11 +190,21 @@ def settings_post():
         user_model.username = username
 
     password = settings_form.password.data
+    currentp = settings_form.currentpassword.data
     if password != "":
-        user_model.password = password
+        if currentp == "":
+            return redirect(url_for(
+                "auth.settings",
+                error = "If you want to change your current password, put it"), code = 303)
+        # Check the password
+        if not check_password_hash(user_model.password, currentp):
+            return redirect(url_for(
+                "auth.settings",
+                error = "Incorrect password bughead what are you trying to do ? >:|"), code = 303)
+        user_model.password = generate_password_hash(password)
 
     db.session.commit()
-    return redirect(url_for("home.home"), code = 302)  # Redirect to the home OK
+    return redirect(url_for("auth.settings"), code = 302)  # Redirect to the home OK
     
 
 @bp.route("/settings", methods = ["GET"])
@@ -193,7 +215,7 @@ def settings():
     contex = {
         "url_for" : url_for,
         "settings_form" : settings_form,
-        "search_form" : search_form,
+        "user_data" : current_user.query_data(),
         "error" : request.args.get("error")
     }
     

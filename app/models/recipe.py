@@ -1,4 +1,5 @@
 from app.extensions import db
+from datetime import datetime
 
 # The recipe model
 class Recipe(db.Model):
@@ -6,33 +7,35 @@ class Recipe(db.Model):
     id = db.Column(db.Integer, primary_key = True)
     ingredients = db.Column(db.Text, nullable = False)
     instructions = db.Column(db.Text, nullable = False)
+    description = db.Column(db.Text, nullable = False)
     portions = db.Column(db.Integer)
     idcategory = db.Column(db.Integer, db.ForeignKey("category.id"), nullable = False)
     url = db.Column(db.Text)
     name = db.Column(db.Text, nullable = False)
     preptime = db.Column(db.String(25))
     cooktime = db.Column(db.String(25))
+    datetime = db.Column(db.DateTime, default=datetime.utcnow)
+    iduser = db.Column(db.Integer, db.ForeignKey("user.id"), nullable = False)
 
-    def __init__(self, ingredients : str, idcategory : int, instructions : str, name : str,
-                 portions : int = None, url : str = None, preptime : str = None, cooktime : str = None):
+    def __init__(self, ingredients : str, idcategory : int, instructions : str, name : str, description : str,
+                 iduser: int, portions : int = 1, url : str = "", preptime : str = "", cooktime : str = ""):
         # Assert each argument
-        assert isinstance(ingredients, str) \
-            and isinstance(idcategory, int) \
-            and isinstance(instructions, str) \
-            and isinstance(name, str)
 
-        if portions != None:
-            assert isinstance(portions, int)
-        if url != None:
-            assert isinstance(url, str)
-        if preptime != None:
-            assert isinstance(preptime, int)
-        if cooktime != None:
-            assert isinstance(cooktime, int)
+        print("protions: ", portions)
+        assert isinstance(ingredients, str) 
+        assert isinstance(idcategory, int) 
+        assert isinstance(instructions, str) 
+        assert isinstance(name, str) 
+        assert isinstance(url, str) 
+        assert isinstance(preptime, str) 
+        assert isinstance(cooktime, str)
+        assert isinstance(portions, int)
 
         self.name = name
+        self.description = description
         self.ingredients = ingredients
         self.idcategory = idcategory
+        self.iduser = iduser
         self.instructions = instructions
         self.portions = portions
         self.url = url
@@ -67,12 +70,10 @@ class NutritionalEle(db.Model):
     idrecipe = db.Column(db.Integer, db.ForeignKey("recipe.id"), nullable = False)
     amount = db.Column(db.Float)
 
-    def __init__(self, name : str, unit : str, idrecipe : int, amount : int = None):
+    def __init__(self, name : str, unit : str, idrecipe : int, amount : float = 0.0):
         assert isinstance(name, str) and isinstance(unit, str) \
-            and isinstance(idrecipe, int)
-
-        if amount != None:
-            assert isinstance(amount, int)
+            and isinstance(idrecipe, int) \
+            and isinstance(amount, float)
 
         self.name = name
         self.unit = unit

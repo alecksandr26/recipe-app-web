@@ -8,10 +8,7 @@
 {% endblock %}
 
 {% block main %}
-<!-- Check an error -->
-{% if error %}
-<p>{{ error }}</p>
-{% endif %}
+
 
 <div class="d-flex justify-content-center">
   <span class="title">
@@ -19,11 +16,34 @@
   </span>
 </div>
 
+<div class="text-center">
+  {% if error %}
+    <div class="alert alert-danger" role="alert">
+      {{ error }}
+    </div>
+  {% endif %}
+</div>
+
 <div class="container">
-    <form action="{{ url_for('auth.settings_post') }}" method="POST">
-	{{ wtf.quick_form(settings_form) }}
-	{{ settings_form.csrf_token }}
-    </form>
+  <div class="row justify-content-center">
+    <div class="col-md-6">
+      <form action="{{ url_for('auth.settings_post') }}" method="POST">
+        {{ wtf.quick_form(settings_form) }}
+        {{ settings_form.csrf_token }}
+      </form>
+    </div>
+    <div class="col-md-4">
+      <div class="card shadow p-3 mb-5 bg-white rounded">
+        <div class="card-header">
+          Current Settings
+        </div>
+        <div class="card-body">
+          <p>UserName: {{ user_data.username }}</p>
+          <p>Email: {{ user_data.mail }}</p>
+        </div>
+      </div>
+    </div>
+  </div>
 </div>
 
 {% endblock %}

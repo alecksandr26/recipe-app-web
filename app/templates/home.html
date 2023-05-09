@@ -13,22 +13,52 @@
 
 
 {% block main %}
+
+
 <div class="d-flex justify-content-center">
   <span class="title">
     <h1>{% block title %} Home {% endblock %}</h1>
   </span>
 </div>
 
+
+<div class="text-center">
+  {% if error %}
+    <div class="alert alert-danger" role="alert">
+      {{ error }}
+    </div>
+  {% endif %}
+</div>
+
+
 <div class="content text-center">
-    <h2>Recipes/Lists/Categories</h2>
+    <h3>Favorites List</h3>
+    <!-- empty set -->
+  {% if not data  %}
+    <p>Empty Favorites List...</p>
+  {% else %}
+    <ul>
+      {% for recipe in data %}
+        <li class="recipe-card mb-3">
+          {% include 'recipe/card.html' %}
+        </li>
+      {% endfor %}
+    </ul>
+  {% endif %}
 </div>
 
-<div>
-    {% if data == [] %}
-    <!--  -->
-    {% else %}
+<style>
+  .recipe-card {
+    margin-top: 10px;
+  }
 
-    {% endif %}
-</div>
+  ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+</style>
+
 
 {% endblock %}

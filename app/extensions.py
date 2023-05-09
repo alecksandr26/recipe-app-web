@@ -13,6 +13,9 @@ from flask_login import LoginManager
 # https://pythonhosted.org/Flask-Bootstrap/basic-usage.html
 from flask_bootstrap import Bootstrap
 
+# Import the flask-cors
+from flask_cors import CORS
+
 # For the database
 db = SQLAlchemy()
 

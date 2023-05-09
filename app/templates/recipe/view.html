@@ -1,0 +1,71 @@
+{% extends 'base.html' %}
+
+<!-- Import what the forms -->
+{% import 'bootstrap/wtf.html' as wtf %}
+
+{% block header %}
+{% include 'navbar.html' %}
+{% endblock %}
+
+{% block main %}
+
+<div class="text-center">
+  {% if error %}
+    <div class="alert alert-danger" role="alert">
+      {{ error }}
+    </div>
+  {% endif %}
+</div>
+
+<div class="container mt-5">
+    <!-- Recipe title and description -->
+    <div class="row">
+	<div class="col-12">
+	    <h1 class="display-4">{% block title %} {{ recipe.name }} {% endblock %}</h1>
+	    <p class="lead">{{ recipe.description }}</p>
+	</div>
+    </div>
+
+    <!-- Recipe information -->
+    <div class="row">
+	<div class="col-md-6">
+	    <h3>Ingredients</h3>
+	    <p>{{ recipe.ingredients }}</p>
+
+	    <h3>Instructions</h3>
+	    <p>{{ recipe.instructions }}</p>
+	</div>
+	<div class="col-md-6">
+	    <h3>Details</h3>
+	    <p><strong>Portions:</strong> {{ recipe.portions }}</p>
+	    {% if recipe.preptime != "" %}
+	    <p><strong>Preparation Time:</strong> {{ recipe.preptime }}</p>
+	    {% endif %}
+
+	    {% if recipe.cooktime != "" %}
+	    <p><strong>Cooking Time:</strong> {{ recipe.cooktime }}</p>
+	    {% endif %}
+	    {% if recipe.url != "" %}
+	    <p><strong>Source:</strong> <a href="{{ recipe.url }}" target="_blank">{{ recipe.url }}</a></p>
+	    {% endif %}
+	    
+	    <p class="card-text"><strong>Created on:</strong> {{ recipe.datetime.strftime('%B %d, %Y') }}</p>
+	    <p><strong>Owner:</strong> {{ owner }}</p>
+	</div>
+    </div>
+
+    <!-- Back button -->
+    <div class="row mt-3">
+	<div class="col-12">
+            <button onclick="goBack()" class="btn btn-secondary">Back</button>
+	    <script>
+		function goBack() {
+                     window.history.back();
+		}
+	    </script>
+	    {% include 'recipe/delete_button.html' %}
+	</div>
+    </div>
+</div>
+
+{% endblock %}

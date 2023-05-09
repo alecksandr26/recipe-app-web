@@ -1,7 +1,7 @@
 from flask import Blueprint, render_template, make_response, url_for, abort
 
-from app.models.user import User
-from app.models.chef import Chef
+
+from app.models import User, Chef, List
 
 from app.extensions import login_manager
 from flask_login import UserMixin
@@ -19,6 +19,13 @@ def query_data_by_id(user_id : int) -> User:
     assert isinstance(user_id, int)
     return User.query.filter_by(id = user_id).first()
 
+
+def query_list_by_id(user_id : int) -> List:
+    assert isinstance(user_id, int)
+    
+    # Brint the first list with the email which is unique
+    return List.query.filter_by(iduser = user_id).first()
+
 # To create an instance of the user session from a model
 class UserSession(UserMixin):
     def __init__(self, user_model : User):
@@ -34,6 +41,10 @@ class UserSession(UserMixin):
     # To fetch the data from the user
     def query_data(self):
         return query_data_by_id(int(self.id))
+
+    # Brins the user recipe created list
+    def query_favorites_list(self):
+        return query_list_by_id(int(self.id))
 
 # To catch back from the instance session a use
 @login_manager.user_loader
