@@ -1,12 +1,14 @@
-
-
 <div class="mx-auto" style="width: 25%;">
     <div class="card">
 	<div class="card-header">
 	    <h4 class="card-title">{{ recipe.name }}</h4>
 	</div>
 	<div class="card-body">
-	    <h6 class="card-subtitle mb-2 text-muted">{{ recipe.description }}</h6>
+	    {% if recipe.description|length > 100 %}
+	    <h6 class="card-subtitle mb-2 text-muted ">{{ recipe.description[0:100] }}...</h6>
+	    {% else %}
+	    <h6 class="card-subtitle mb-2 text-muted ">{{ recipe.description }}</h6>
+	    {% endif %}
 	    <p class="card-text">{{ recipe.portions }} portions</p>
 	    {% if recipe.preptime != "" %}
 	    <p class="card-text">{{ recipe.preptime }} prep time</p>

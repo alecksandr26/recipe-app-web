@@ -138,8 +138,7 @@ def signup_post():
     db.session.add(fav_list_model)
 
     db.session.commit()
-
-                
+    
     # Create the session and login it
     user_session = UserSession(user_model)
     login_user(user_session)

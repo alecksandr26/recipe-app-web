@@ -1,7 +1,7 @@
 {% if is_owner %}
+<a href="{{ url_for("recipe.edit", id = recipe.id) }}" class="btn btn-primary">Edit</a>
 <button type="submit" class="btn btn-danger" onclick="deleteRecipe()"
 	data-csrf-token="{{ csrf_token() }}">Delete</button>
-
 {% endif %}
 <script>
     function deleteRecipe() {
@@ -28,7 +28,7 @@ console.log(data.message)
         window.location.replace('{{ url_for("home.home") }}');
 } 
 else  {
-url = '{{ url_for("recipe.view", id = recipe.id) }}' + "?error=" + data.message;
+url = '{{ url_for("home.home") }}' + "?error=" + data.message;
 window.location.replace(url);
 }
 })

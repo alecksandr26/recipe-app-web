@@ -10,4 +10,4 @@ class SettingsForm(FlaskForm):
         EqualTo("confirm", message = "Passwords must match")
     ])
     confirm = PasswordField("Repeat New Password")
-    submit = SubmitField("Submit")
+    submit = SubmitField("Save")

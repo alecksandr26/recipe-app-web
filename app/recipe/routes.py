@@ -7,8 +7,8 @@ from flask_login import login_user, login_required, logout_user, current_user
 
 # To push new data to the database
 from app.extensions import db
-from app.forms import RecipeCreateForm, HomeSearchForm
-from app.models import Recipe, List, ListRecipes, User
+from app.forms import RecipeCreateForm, HomeSearchForm, RecipeCreateForm, RecipeUpdateForm
+from app.models import Recipe, List, ListRecipes, User, Category
 
 # To allow the corss origins
 from flask_cors import cross_origin
@@ -93,10 +93,59 @@ def view(id : int):
     else:
         contex["owner"] = owner.username
         contex["is_owner"] = False
+
+
+    # Finally fetch the category name
+    contex["category_name"] = Category.query.filter_by(id = recipe_model.idcategory).first().name
     
     return render_template("recipe/view.html", **contex)
 
+@bp.route("/<int:id>/edit", methods = ["PUT"])
+@login_required
+def update(id : int):
+    recipe_update_form = RecipeUpdateForm()
 
+    recipe = Recipe.query.filter_by(id = id).first()
+
+    if recipe == None:
+        return jsonify({"message" : f"The recipe {id} doesn't exist what are you doing pal >:|",
+                        "success" : False})
+    
+    if recipe.iduser != int(current_user.id):
+        return jsonify({"message" : f"The recipe {id} doesn't belong to you pal >:|",
+                        "success" : False})
+
+    print(recipe_update_form.data)
+    if recipe_update_form.new_category.data:
+        recipe.idcategory = recipe_update_form.new_category.data
+
+    if recipe_update_form.new_name.data:
+        recipe.name = recipe_update_form.new_name.data
+
+
+    # Update the recipe
+    db.session.commit()
+    return jsonify({"message" : f"Recipe {recipe.id} updated", "success" : True})
+
+@bp.route("/<int:id>/edit", methods = ["GET"])
+@login_required
+def edit(id : int):
+
+    recipe = Recipe.query.filter_by(id = id).first()
+    if recipe == None:
+        return redirect(url_for("home.home",
+                                error = f"The recipe {id} doesn't exist what are you doing pal >:|"),
+                        code = 303)
+    
+    contex = {"error" : request.args.get("get")}
+    contex["recipe_update_form"] = RecipeUpdateForm()
+    contex["recipe"] = recipe
+
+    # Finally fetch the category name
+    contex["category_name"] = Category.query.filter_by(id = recipe.idcategory).first().name
+    return render_template("recipe/edit.html", **contex)
+
+    
 @bp.route("/<int:id>", methods = ["DELETE"])
 @login_required
 def delete(id : int):

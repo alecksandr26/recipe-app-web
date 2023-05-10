@@ -29,9 +29,26 @@ class RecipeCreateForm(FlaskForm):
         super(RecipeCreateForm, self).__init__(*args, **kwargs)
         self.category.choices = [(c.id, c.name) for c in Category.query.all()]
         
-
-
-
 # The people can comment recipes
-class RecipeCommentFrom(FlaskForm):
+class RecipeCommentForm(FlaskForm):
     pass
+
+
+# Create the recipe form
+class RecipeUpdateForm(FlaskForm):
+    new_name = StringField("New Name")
+    new_category = SelectField("New Category", choices=[], coerce=int)
+    new_desc = TextAreaField("New Description")
+    new_ingre = TextAreaField("New Ingredients")
+    new_instru = TextAreaField("New Instructions")
+    new_portions = IntegerField("New Portions", validators=[NumberRange(min=1, max=20)], default = 1)
+    new_url = URLField("New Image url")
+    new_preptime = StringField("New Preparation time")
+    new_cooktime = StringField("New Cook time")
+    # We are going to create our own submit button
+    # submit = SubmitField("Save")
+
+    # Construct the forms and get the choices from the database
+    def __init__(self, *args, **kwargs):
+        super(RecipeUpdateForm, self).__init__(*args, **kwargs)
+        self.new_category.choices = [(c.id, c.name) for c in Category.query.all()]

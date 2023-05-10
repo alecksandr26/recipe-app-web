@@ -20,8 +20,7 @@ class Recipe(db.Model):
     def __init__(self, ingredients : str, idcategory : int, instructions : str, name : str, description : str,
                  iduser: int, portions : int = 1, url : str = "", preptime : str = "", cooktime : str = ""):
         # Assert each argument
-
-        print("protions: ", portions)
+        
         assert isinstance(ingredients, str) 
         assert isinstance(idcategory, int) 
         assert isinstance(instructions, str) 

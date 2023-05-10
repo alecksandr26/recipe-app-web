@@ -10,3 +10,9 @@
 ---- [2023/05/09] ----
 - Write more tests for the auth [ ]
 - Refactor the html code files [ ]
+- Try to create an function in jinja [ ]
+- Add the js code in the static path [ ]
+- Add the comments section for each recipe [ ]
+- Change the settings update to use PUT [ ]
+- Build a middleware we need it [ ]
+
