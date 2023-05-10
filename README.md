@@ -35,3 +35,8 @@ These are the mockups of the app.
 
 https://app.moqups.com/h3IlkiaF2mpUWPfcLvkJuiiinSAJSUTE/view/page/a013e980c
 
+
+
+# References
+1. Dyouri, A. (2022). How To Structure a Large Flask Application with Flask Blueprints and Flask-SQLAlchemy. DigitalOcean. https://www.digitalocean.com/community/tutorials/how-to-structure-a-large-flask-application-with-flask-blueprints-and-flask-sqlalchemy#prerequisites
+2. Python, R. (2023a). Flask by Example – Setting up Postgres, SQLAlchemy, and Alembic. realpython.com. https://realpython.com/flask-by-example-part-2-postgres-sqlalchemy-and-alembic/
