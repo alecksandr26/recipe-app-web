@@ -1,4 +1,5 @@
-from flask import Flask
+from flask import Flask, request
+import requests
 from flask_wtf.csrf import CSRFProtect
 
 # Import the configuration
@@ -15,12 +16,29 @@ import click
 
 # Import the whole models
 from app.models import *
+from werkzeug.wrappers import Request, Response
+
+# again middleware
+class HTTPMethodOverrideMiddleware(object):
+    def __init__(self, app):
+        self.app = app
+
+    def __call__(self, environ, start_response):
+        request = Request(environ)
+
+        if "_method" in request.form:
+            method = request.form["_method"].upper()
+            if method in ["PUT"]:
+                environ["REQUEST_METHOD"] = method
+
+        return self.app(environ, start_response)
+            
 
 # The function which is going to create the app
 def create_app(config_class = Config) -> Flask:
     app = Flask(__name__)
     app.config.from_object(config_class)
-
+    
     # Enable csrf protection
     csrf = CSRFProtect(app)
     
@@ -66,5 +84,9 @@ def create_app(config_class = Config) -> Flask:
             db.create_all()
         elif interact == "drop":
             db.drop_all()
+
+
+    # Add the middleware
+    # app.wsgi_app = HTTPMethodOverrideMiddleware(app.wsgi_app)
 
     return app

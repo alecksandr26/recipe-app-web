@@ -100,32 +100,45 @@ def view(id : int):
     
     return render_template("recipe/view.html", **contex)
 
-@bp.route("/<int:id>/edit", methods = ["PUT"])
+
+
+@bp.route("/<int:id>/edit", methods = ["POST"])
 @login_required
 def update(id : int):
     recipe_update_form = RecipeUpdateForm()
 
     recipe = Recipe.query.filter_by(id = id).first()
 
-    if recipe == None:
-        return jsonify({"message" : f"The recipe {id} doesn't exist what are you doing pal >:|",
-                        "success" : False})
-    
-    if recipe.iduser != int(current_user.id):
-        return jsonify({"message" : f"The recipe {id} doesn't belong to you pal >:|",
-                        "success" : False})
-
-    print(recipe_update_form.data)
     if recipe_update_form.new_category.data:
         recipe.idcategory = recipe_update_form.new_category.data
 
     if recipe_update_form.new_name.data:
         recipe.name = recipe_update_form.new_name.data
 
+    if recipe_update_form.new_desc.data:
+        recipe.description = recipe_update_form.new_desc.data
+
+    if recipe_update_form.new_instru.data:
+        recipe.instructions = recipe_update_form.new_instru.data
+
+    if recipe_update_form.new_ingre.data:
+        recipe.ingredients = recipe_update_form.new_ingre.data
+        
+    if recipe_update_form.new_portions.data:
+        recipe.portions = recipe_update_form.new_portions.data
+        
+    if recipe_update_form.new_url.data:
+        recipe.url = recipe_update_form.new_url.data
+
+    if recipe_update_form.new_preptime.data:
+        recipe.preptime = recipe_update_form.new_preptime.data
+
+    if recipe_update_form.new_cooktime.data:
+        recipe.cooktime = recipe_update_form.new_cooktime.data
 
     # Update the recipe
     db.session.commit()
-    return jsonify({"message" : f"Recipe {recipe.id} updated", "success" : True})
+    return redirect(url_for("recipe.view", id = id), code = 302)
 
 @bp.route("/<int:id>/edit", methods = ["GET"])
 @login_required

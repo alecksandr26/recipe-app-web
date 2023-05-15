@@ -15,4 +15,6 @@
 - Add the comments section for each recipe [ ]
 - Change the settings update to use PUT [ ]
 - Build a middleware we need it [ ]
+---- [2023/05/14] ----
+- Add a middleware that counts the visits of a recipe
 

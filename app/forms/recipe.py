@@ -46,7 +46,7 @@ class RecipeUpdateForm(FlaskForm):
     new_preptime = StringField("New Preparation time")
     new_cooktime = StringField("New Cook time")
     # We are going to create our own submit button
-    # submit = SubmitField("Save")
+    submit = SubmitField("Save")
 
     # Construct the forms and get the choices from the database
     def __init__(self, *args, **kwargs):
