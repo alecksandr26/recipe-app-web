@@ -12,9 +12,9 @@ from app.models import Recipe, List, ListRecipes, User, Category
 
 # To allow the corss origins
 from flask_cors import cross_origin
-
-
 import re
+
+from sqlalchemy import and_
 
 url_regex = re.compile(
     r'^(?:http|ftp)s?://'  # scheme
@@ -75,7 +75,6 @@ def create():
 @bp.route("/<int:id>", methods = ["GET"])
 @login_required
 def view(id : int):
-
     contex = {"error" : request.args.get("error")}
     # Made the query
     recipe_model = Recipe.query.filter_by(id = id).first()
@@ -97,11 +96,42 @@ def view(id : int):
 
     # Finally fetch the category name
     contex["category_name"] = Category.query.filter_by(id = recipe_model.idcategory).first().name
+
+
+    # Check if the recipe is in favorites
+    id_favorites_list = current_user.query_favorites_list().id
+    is_in_favorites = ListRecipes.query.filter_by(idrecipe = id, idlist = id_favorites_list).first()
+    print(is_in_favorites)
+    contex["is_in_favorites"] = is_in_favorites
     
     return render_template("recipe/view.html", **contex)
 
 
+@bp.route("/<int:id>/add-rem-favories", methods = ["PUT"])
+@login_required
+def add_rem_fav(id : int):
+    # For the moment redirects back to the home
+    recipe_model = Recipe.query.filter_by(id = id).first()
 
+    if recipe_model == None:
+        return jsonify({"message" : f"The recipe {id} doesn't exist what are you doing pal >:|",
+                        "success" : False})
+
+    # Fetch the favorie list from the user
+    id_favorites_list = current_user.query_favorites_list().id
+    is_in_favorites = ListRecipes.query.filter_by(idrecipe = id, idlist = id_favorites_list).first()
+    if not is_in_favorites:
+        new_list_to_favorites = ListRecipes(id, id_favorites_list)
+        db.session.add(new_list_to_favorites)
+        print("it doens't exist in favorites")
+    else:
+        db.session.delete(is_in_favorites)
+        print("It already exist so it is deleting")
+    db.session.commit()
+    return jsonify({"message" : f"Recipe {id} added or removed", "success" : True})
+
+
+# Find the way to put this route with a middleware in javascript
 @bp.route("/<int:id>/edit", methods = ["POST"])
 @login_required
 def update(id : int):
@@ -164,7 +194,6 @@ def edit(id : int):
 def delete(id : int):
     # For the moment redirects back to the home
     recipe_model = Recipe.query.filter_by(id = id).first()
-
 
     if recipe_model == None:
         return jsonify({"message" : f"The recipe {id} doesn't exist what are you doing pal >:|",

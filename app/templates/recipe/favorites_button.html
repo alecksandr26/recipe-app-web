@@ -1,0 +1,40 @@
+{% if is_in_favorites %}
+<button class="btn btn-outline-danger" onclick="addRemFavorites()"
+	data-csrf-token="{{ csrf_token() }}">Remove-Fav</button>
+{% else %}
+<button class="btn btn-outline-success" onclick="addRemFavorites()"
+	data-csrf-token="{{ csrf_token() }}">Add-Fav</button>
+{% endif %}
+<script>
+    function addRemFavorites() {
+		const button = event.target;
+    if (confirm("Are you sure you want to add this recipe to your favorites list?")) {
+// Query the csrf_token
+const csrf_token = button.getAttribute('data-csrf-token');
+fetch('{{ url_for("recipe.add_rem_fav", id=recipe.id) }}', {
+    method: "PUT",
+    headers: {
+        'X-CSRFToken': csrf_token
+    }
+})
+.then(response => {
+    if (response.ok) {
+        return response.json();
+    }
+    throw new Error("Network response was not ok.");
+})
+.then(data => {
+// Checks the error
+console.log(data.message)
+    if (data.message === "Recipe {{ recipe.id }} added or removed") {
+        window.location.replace('{{ url_for("recipe.view", id = recipe.id) }}');
+} 
+else  {
+url = '{{ url_for("home.home") }}' + "?error=" + data.message;
+window.location.replace(url);
+}
+})
+    }
+    }
+</script>
+
